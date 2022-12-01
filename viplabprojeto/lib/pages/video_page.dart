@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-
 // import 'package:camera/camera.dart';
 
 // replay no video gravado
@@ -13,7 +12,6 @@ class VideoPage extends StatefulWidget {
 
   @override
   _VideoPageState createState() => _VideoPageState();
-  
 }
 
 class _VideoPageState extends State<VideoPage> {
@@ -32,7 +30,7 @@ class _VideoPageState extends State<VideoPage> {
     await _videoPlayerController.play(); // startar o video
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -61,6 +59,4 @@ class _VideoPageState extends State<VideoPage> {
       ),
     );
   }
-
 }
-
