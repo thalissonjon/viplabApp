@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 // import 'package:camera/camera.dart';
 
@@ -24,10 +25,17 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   Future _initVideoPlayer() async {
-    _videoPlayerController = VideoPlayerController.file(File(widget.filePath)); // criar um novo video controller com o file passado para esse  widget
+    _videoPlayerController = VideoPlayerController.file(File(widget
+        .filePath)); // criar um novo video controller com o file passado para esse  widget
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true); // rodar o video varias vezes
     await _videoPlayerController.play(); // startar o video
+  }
+
+  _saveFile() async {
+    final video = await _videoPlayerController;
+    await GallerySaver.saveVideo(video.path);
+    File(video.path).deleteSync();
   }
 
   @override
@@ -41,7 +49,8 @@ class _VideoPageState extends State<VideoPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () {
-              print('fazer algo com o arquivo');
+              print(
+                  '------------------------------ fazer algo com o arquivo ----------------------------');
             },
           )
         ],

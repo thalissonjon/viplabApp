@@ -65,8 +65,7 @@ class _CameraPageState extends State<CameraPage> {
 
   _recordVideo() async {
     if (_isRecording) {
-      final file = await _cameraController
-          .stopVideoRecording(); //retorna o arquivo de video
+      final file = await _cameraController.stopVideoRecording(); //retorna o arquivo de video
       setState(() => _isRecording = false); // update
       final route = MaterialPageRoute(
         // abrir o arquivo para checagem

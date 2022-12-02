@@ -41,6 +41,7 @@ dependencies:
   #play video
   video_player: ^2.4.8
   camera: ^0.10.0+4
+  gallery_saver: ^2.3.2
 
 dev_dependencies:
   flutter_test:
