@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:viplabprojeto/main.dart';
 
 // import 'package:camera/camera.dart';
 
@@ -30,10 +31,12 @@ class _VideoPageState extends State<VideoPage> {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true); // rodar o video varias vezes
     await _videoPlayerController.play(); // startar o video
+
+    print("--------------------------------------------------------");
   }
 
   _saveFile() async {
-    final video = await _videoPlayerController;
+    final video = File(widget.filePath);
     await GallerySaver.saveVideo(video.path);
     File(video.path).deleteSync();
   }
@@ -49,8 +52,9 @@ class _VideoPageState extends State<VideoPage> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () {
-              print(
-                  '------------------------------ fazer algo com o arquivo ----------------------------');
+              _saveFile(); // clicar pra salvar
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Gravar()));
             },
           )
         ],
