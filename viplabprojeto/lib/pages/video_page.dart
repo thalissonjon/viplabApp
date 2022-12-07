@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:viplabprojeto/main.dart';
+import 'package:viplabprojeto/api/firebase_api.dart';
+import 'package:viplabprojeto/pages/firebase_list.dart';
+import 'package:http/http.dart' as http;
 
 // import 'package:camera/camera.dart';
 
@@ -41,6 +45,20 @@ class _VideoPageState extends State<VideoPage> {
     File(video.path).deleteSync();
   }
 
+  Future uploadVideo() async {
+    final video = File(widget.filePath);
+
+    final fileName = basename(video.path);
+    final destination = 'videosCoverTest/$fileName';
+
+    final task = FirebaseApi.uploadVideo(destination, video);
+    if (task == null) return; // sera null se ocorrer algum erro na api
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print("Link do download $urlDownload");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +71,10 @@ class _VideoPageState extends State<VideoPage> {
             icon: const Icon(Icons.check),
             onPressed: () {
               _saveFile(); // clicar pra salvar
+              uploadVideo(); // upload para o firebase storage
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Gravar()));
+                  // context, MaterialPageRoute(builder: (context) => Gravar()));
+                  context, MaterialPageRoute(builder: (context) => Firebaselist()));
             },
           )
         ],
@@ -73,3 +93,13 @@ class _VideoPageState extends State<VideoPage> {
     );
   }
 }
+
+/* uploadImage(String title, File file) {
+  var request = http.MultipartRequest(
+      "POST", Uri.parse("gs://viplabcovertest.appspot.com/videos"));
+
+  request.fields['title'] = "covervideo";
+
+  var video = http.MultipartFile.fromBytes('video', (await rootBundle.load('assets/testimage.png')).buffer.asUint8List(), filename: 'testimage.png');
+}  */
+

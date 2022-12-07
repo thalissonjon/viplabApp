@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:viplabprojeto/pages/camera_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:viplabprojeto/pages/video_page.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -18,16 +23,17 @@ void main() {
     );
   }
 } */
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp( 
-      home: Gravar() // criando novo widget pra escapar do erro do "no media query widget found"                  
-    );
+    return MaterialApp(
+        home:
+            Gravar() // criando novo widget pra escapar do erro do "no media query widget found"
+        );
   }
 }
-class Gravar extends StatelessWidget {
 
+class Gravar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,3 +57,4 @@ class Gravar extends StatelessWidget {
     );
   }
 }
+

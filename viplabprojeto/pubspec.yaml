@@ -42,6 +42,11 @@ dependencies:
   video_player: ^2.4.8
   camera: ^0.10.0+4
   gallery_saver: ^2.3.2
+  http: ^0.13.5
+  
+  # upload firebase
+  firebase_storage: ^11.0.6
+  firebase_core: ^2.3.0
 
 dev_dependencies:
   flutter_test:
