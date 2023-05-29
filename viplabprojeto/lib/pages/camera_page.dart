@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:viplabprojeto/pages/video_page.dart';
+import 'package:flutter/services.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
@@ -15,13 +16,38 @@ class _CameraPageState extends State<CameraPage> {
   late CameraController _cameraController;
 
   @override
+  void initState() {
+    super.initState();
+    // Define a orientação como retrato ao entrar na página da câmera
+    SystemChrome.setPreferredOrientations([
+      // DeviceOrientation.portraitUp,
+      // DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    _initCamera();
+  }
+
+  @override
   void dispose() {
+    // Define a orientação padrão ao sair da página da câmera
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     _cameraController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]); // configurando a orientação da tela para paisagem
+
     if (_isLoading) {
       return Container(
         color: Colors.white,
@@ -65,7 +91,8 @@ class _CameraPageState extends State<CameraPage> {
 
   _recordVideo() async {
     if (_isRecording) {
-      final file = await _cameraController.stopVideoRecording(); //retorna o arquivo de video
+      final file = await _cameraController
+          .stopVideoRecording(); //retorna o arquivo de video
       setState(() => _isRecording = false); // update
       final route = MaterialPageRoute(
         // abrir o arquivo para checagem
@@ -81,9 +108,9 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _initCamera();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _initCamera();
+  // }
 }

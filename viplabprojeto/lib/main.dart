@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:viplabprojeto/pages/camera_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:viplabprojeto/pages/covertestinfo.dart';
+
 // import 'package:viplabprojeto/pages/video_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await Firebase.initializeApp();
+  // await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(MyApp());
 }
 
@@ -28,6 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         home:
+            // SplashScreen()
             Gravar() // criando novo widget pra escapar do erro do "no media query widget found"
         );
   }
@@ -37,24 +47,234 @@ class Gravar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Gravação do cover test'),
-        backgroundColor: Colors.green,
-      ),
+        backgroundColor: Colors.white,
+        body: Container(
+            padding: const EdgeInsets.only(
+              top: 60,
+              left: 20,
+              right: 20,
+            ),
+            child: Column(children: [
+              Row(
+                children: [
+                  Image.asset(
+                    "assets/eyecheck_logo.png",
+                    width: 40,
+                    height: 40,
+                  ),
+                  Text(
+                    "CoverEye",
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Color.fromRGBO(0, 74, 173, 1),
+                        fontWeight: FontWeight.w800),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Text("Testes",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 210,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        Color.fromRGBO(0, 74, 173, 1),
+                        Color.fromRGBO(12, 110, 240, 1),
+                        // Color.fromRGBO(0, 110, 173, 1)
+                      ]),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        topRight: Radius.circular(90),
+                        bottomRight: Radius.circular(10),
+                      )),
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 20, left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Cover Test (teste de cobertura)",
+                          style: TextStyle(
+                              fontSize: 19,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                            "O Cover Test é um exame oftalmológico utilizado para detectar o estrabismo utilizando um oclusor.",
+                            style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400)),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              CupertinoIcons.alarm,
+                              size: 20,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text("5-10 min",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400)),
+                            SizedBox(
+                              width: 100,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CoverTestinfo()));
+                                },
+                                child: Text("Saiba mais",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color.fromRGBO(12, 110, 240, 1),
+                                        fontWeight: FontWeight.w400)),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 25, vertical: 5),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    shadowColor: Colors.black,
+                                    elevation: 10))
+                          ],
+                        )
+                      ],
+                    ),
+                  )),
+              Container(
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  child: Stack(
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          width: MediaQuery.of(context).size.width,
+                          height: 100,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey.withOpacity(0.2)),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 5,
+                                    spreadRadius: 2,
+                                    offset: Offset(8, 10),
+                                    color: Color.fromRGBO(0, 74, 173, 0.4))
+                              ])),
+                      Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        width: 80,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: AssetImage("assets/oclusor.png"),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.maxFinite,
+                        height: 100,
+                        // color: Colors.red.withOpacity(0.3),
+                        margin: const EdgeInsets.only(left: 80, top: 30),
+                        child: Column(children: [
+                          Text(
+                            "Quer realizar o Cover Test?",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(0, 74, 173, 1)),
+                          ),
+                          Text(
+                            "Realize agora o seu teste!",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color.fromRGBO(0, 74, 173, 1)),
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CameraPage()));
+                              },
+                              child: Text("Começar",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400)),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromRGBO(12, 110, 240, 1),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  shadowColor: Colors.black,
+                                  elevation: 10))
+                        ]),
+                      )
+                    ],
+                  ))
+            ])));
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  // arrumar erro de unable to load asset - asset not found
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          child: Text("Começar gravação"),
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
-              textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CameraPage()));
-          },
-        ),
+        child: Image.asset('viplabprojeto/assets/eyecheck_brand.png'), //
       ),
     );
   }
 }
 
+// ElevatedButton(
+//           child: Text("Começar gravação"),
+//           style: ElevatedButton.styleFrom(
+//               backgroundColor: Colors.green,
+//               padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+//               textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+//           onPressed: () {
+//             Navigator.push(
+//                 context, MaterialPageRoute(builder: (context) => CameraPage()));
+//           },
+//         ),
