@@ -1,4 +1,4 @@
-# CoverEye
+# 👁 EyeCheck
 
 📍 O objetivo do aplicativo é fornecer uma ferramenta prática e acessível para a detecção de estrabismo por meio do uso da câmera do dispositivo móvel. Ele permite que os usuários realizem um autoteste, gravando um vídeo enquanto realizam o teste de cobertura alternada dos olhos.
 
@@ -6,5 +6,7 @@ O aplicativo utiliza técnicas avançadas de processamento de vídeo e aprendiza
 
 Este repositório é uma oportunidade de compartilhar o código-fonte do aplicativo, permitindo que outros desenvolvedores e pesquisadores contribuam, aprendam e explorem o campo do diagnóstico de estrabismo usando tecnologias de visão computacional.
 
-![Logo do CoverEye](https://github.com/thalissonjon/viplabApp/blob/main/viplabprojeto/assets/eyecheck_brand.png)
+<p align="center">
+  <img src="https://github.com/thalissonjon/viplabApp/blob/main/viplabprojeto/assets/eyecheck_brandbg.png" alt="Logo do CoverEye" />
+</p>
 
