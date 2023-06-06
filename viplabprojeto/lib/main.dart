@@ -74,15 +74,15 @@ class Gravar extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              Row(
-                children: [
-                  Text("Testes",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold))
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Text("Testes",
+              //         style: TextStyle(
+              //             fontSize: 20,
+              //             color: Colors.black,
+              //             fontWeight: FontWeight.bold))
+              //   ],
+              // ),
               SizedBox(
                 height: 20,
               ),
@@ -141,7 +141,7 @@ class Gravar extends StatelessWidget {
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400)),
                             SizedBox(
-                              width: 100,
+                              width: 47,
                             ),
                             ElevatedButton(
                                 onPressed: () {
@@ -189,7 +189,7 @@ class Gravar extends StatelessWidget {
                                     blurRadius: 5,
                                     spreadRadius: 2,
                                     offset: Offset(8, 10),
-                                    color: Color.fromRGBO(0, 74, 173, 0.4))
+                                    color: Color.fromRGBO(0, 74, 173, 0.2))
                               ])),
                       Container(
                         margin: const EdgeInsets.only(top: 30),
@@ -248,9 +248,122 @@ class Gravar extends StatelessWidget {
                                   shadowColor: Colors.black,
                                   elevation: 10))
                         ]),
-                      )
+                      ),
                     ],
-                  ))
+                  )),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Créditos",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(16, 16, 16, 1),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 100,
+                            width: (MediaQuery.of(context).size.width / 2) - 35,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                image: AssetImage("assets/viplab.png"),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 3,
+                                  offset: Offset(5, 5),
+                                  color: Color.fromRGBO(0, 74, 173, 0.1),
+                                ),
+                                BoxShadow(
+                                  blurRadius: 3,
+                                  offset: Offset(-5, -5),
+                                  color: Color.fromRGBO(0, 74, 173, 0.1),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 100,
+                            width: (MediaQuery.of(context).size.width / 2) - 35,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                image: AssetImage("assets/nca.jpg"),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 3,
+                                  offset: Offset(5, 5),
+                                  color: Color.fromRGBO(0, 74, 173, 0.1),
+                                ),
+                                BoxShadow(
+                                  blurRadius: 3,
+                                  offset: Offset(-5, -5),
+                                  color: Color.fromRGBO(0, 74, 173, 0.1),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 100,
+                        width: (MediaQuery.of(context).size.width / 2),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image: AssetImage("assets/ufma.png"),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 3,
+                              offset: Offset(5, 5),
+                              color: Color.fromRGBO(0, 74, 173, 0.1),
+                            ),
+                            BoxShadow(
+                              blurRadius: 3,
+                              offset: Offset(-5, -5),
+                              color: Color.fromRGBO(0, 74, 173, 0.1),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ])));
   }
 }

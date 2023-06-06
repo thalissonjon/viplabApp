@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:viplabprojeto/main.dart';
 
 class Results extends StatefulWidget {
   Results({Key? key}) : super(key: key);
@@ -144,6 +145,7 @@ class _ResultsState extends State<Results> {
           top: 60,
           left: 20,
           right: 20,
+          bottom: 40, 
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,13 +153,15 @@ class _ResultsState extends State<Results> {
             Text(
               'Resultados',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 25,
+                color: Color.fromRGBO(0, 74, 173, 1),
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 5),
             Expanded(
               child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: data.length,
                 itemBuilder: (BuildContext context, int index) {
                   final Map<String, dynamic> row = data[index];
@@ -166,19 +170,24 @@ class _ResultsState extends State<Results> {
                     rowWidgets.add(
                       Container(
                         height: 50,
-                        margin: const EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 10),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                width: 1, color: Colors.grey.withOpacity(0.2)),
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 5,
-                                  spreadRadius: 2,
-                                  offset: Offset(8, 10),
-                                  color: Color.fromRGBO(0, 74, 173, 0.4))
-                            ]),
+                          borderRadius: BorderRadius.circular(0.4),
+                          color: Colors.white,
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4,
+                              spreadRadius: 1,
+                              offset: Offset(8, 10),
+                              color: Color.fromRGBO(0, 74, 173, 0.2),
+                            ),
+                          ],
+                        ),
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -188,14 +197,18 @@ class _ResultsState extends State<Results> {
                                 key,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(0, 74, 173, 0.4),
+                                  fontSize: 18,
+                                  color: Color.fromRGBO(0, 74, 173, 1),
                                 ),
                               ),
-                              Text(row[key].toString(),
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(0, 74, 173, 1),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w300)),
+                              Text(
+                                row[key].toString(),
+                                style: TextStyle(
+                                  color: Color.fromRGBO(0, 74, 173, 1),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -209,6 +222,34 @@ class _ResultsState extends State<Results> {
                 },
               ),
             ),
+            // SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Gravar()),
+                  );
+                },
+                child: Text(
+                  "Voltar para a página inicial",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(0, 74, 173, 1),
+                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  shadowColor: Colors.black,
+                  elevation: 10,
+                ),
+              ),
+            )
           ],
         ),
       ),
