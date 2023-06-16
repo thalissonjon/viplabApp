@@ -14,28 +14,25 @@ class _CameraPageState extends State<CameraPage> {
   bool _isLoading = true;
   bool _isRecording = false;
   late CameraController _cameraController;
+  late List<CameraDescription> _availableCameras;
+  late int _currentCameraIndex;
 
   @override
   void initState() {
     super.initState();
-    // Define a orientação como retrato ao entrar na página da câmera
+    _initCamera();
     SystemChrome.setPreferredOrientations([
-      // DeviceOrientation.portraitUp,
-      // DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    _initCamera();
   }
 
   @override
   void dispose() {
-    // Define a orientação padrão ao sair da página da câmera
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp
     ]);
     _cameraController.dispose();
     super.dispose();
@@ -43,11 +40,6 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]); // configurando a orientação da tela para paisagem
-
     if (_isLoading) {
       return Container(
         color: Colors.white,
@@ -69,6 +61,39 @@ class _CameraPageState extends State<CameraPage> {
                 onPressed: () => _recordVideo(),
               ),
             ),
+            Positioned(
+              top: 10,
+              left: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 100),
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(Icons.arrow_back, size: 30),
+                  label: Text(
+                    'Voltar',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 100),
+                child: ElevatedButton.icon(
+                  onPressed: () => _switchCamera(),
+                  icon: Icon(Icons.flip_camera_ios, size: 30),
+                  label: Text('Alternar câmera',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent),
+                ),
+              ),
+            ),
           ],
         ),
       );
@@ -76,17 +101,30 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   _initCamera() async {
-    final cameras = await availableCameras(); // checa as cameras disponiveis
-    final front = cameras.firstWhere((camera) =>
-        camera.lensDirection ==
-        CameraLensDirection.front); // seleciona a camera frontal
+    _availableCameras = await availableCameras();
+    _currentCameraIndex = 0; // Define a primeira câmera como padrão
     _cameraController = CameraController(
-        front,
-        ResolutionPreset
-            .high); // criando instancia do camera controller, setando a resoluçao pra high
-    await _cameraController.initialize(); // inicializando
-    setState(
-        () => _isLoading = false); // depois de iniciar, o loading vai pra falso
+      _availableCameras[_currentCameraIndex],
+      ResolutionPreset.high,
+    );
+    await _cameraController.initialize();
+    setState(() => _isLoading = false);
+  }
+
+  _switchCamera() {
+    int newIndex = (_currentCameraIndex + 1) % _availableCameras.length;
+    setState(() {
+      _currentCameraIndex = newIndex;
+      _cameraController = CameraController(
+        _availableCameras[_currentCameraIndex],
+        ResolutionPreset.high,
+      );
+      _cameraController.initialize().then((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    });
   }
 
   _recordVideo() async {

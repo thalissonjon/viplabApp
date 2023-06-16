@@ -49,11 +49,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
       DeviceOrientation.portraitDown,
     ]);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Carregando'),
-      ),
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'O processo demorará alguns minutos para gerar o resultado.',
+              style: TextStyle(
+                fontSize: 25,
+                color: Color.fromRGBO(37, 125, 242, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16),
+            CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
