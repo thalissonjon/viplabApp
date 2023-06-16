@@ -49,20 +49,39 @@ class _LoadingScreenState extends State<LoadingScreen> {
       DeviceOrientation.portraitDown,
     ]);
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.only(
+          top: 60,
+          left: 20,
+          right: 20,
+          bottom: 40,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'O processo demorará alguns minutos para gerar o resultado.',
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 25,
+                fontSize: 18,
                 color: Color.fromRGBO(37, 125, 242, 1),
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(
+              height: 20,
+            ),
             CircularProgressIndicator(),
+            SizedBox(height: 20),
+            Text(
+              'Você será notificado quando o resultado estiver pronto.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                color: Color.fromRGBO(37, 125, 242, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

@@ -13,6 +13,7 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   bool _isLoading = true;
   bool _isRecording = false;
+  bool _showButtons = true;
   late CameraController _cameraController;
   late List<CameraDescription> _availableCameras;
   late int _currentCameraIndex;
@@ -61,39 +62,42 @@ class _CameraPageState extends State<CameraPage> {
                 onPressed: () => _recordVideo(),
               ),
             ),
-            Positioned(
-              top: 10,
-              left: 0,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: ElevatedButton.icon(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(Icons.arrow_back, size: 30),
-                  label: Text(
-                    'Voltar',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 10,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: ElevatedButton.icon(
-                  onPressed: () => _switchCamera(),
-                  icon: Icon(Icons.flip_camera_ios, size: 30),
-                  label: Text('Alternar câmera',
+            if (_showButtons)
+              Positioned(
+                top: 10,
+                left: 0,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 100),
+                  child: ElevatedButton.icon(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(Icons.arrow_back, size: 30),
+                    label: Text(
+                      'Voltar',
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            if (_showButtons) // tive que colocar dois ifs com a mesma condiçao pra nao ter que envolver tudo em um container
+              Positioned(
+                top: 10,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 100),
+                  child: ElevatedButton.icon(
+                    onPressed: () => _switchCamera(),
+                    icon: Icon(Icons.flip_camera_ios, size: 30),
+                    label: Text('Alternar câmera',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w400)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent),
+                  ),
+                ),
+              ),
           ],
         ),
       );
@@ -131,7 +135,10 @@ class _CameraPageState extends State<CameraPage> {
     if (_isRecording) {
       final file = await _cameraController
           .stopVideoRecording(); //retorna o arquivo de video
-      setState(() => _isRecording = false); // update
+      setState(() {
+        _isRecording = false;
+        _showButtons = true;
+      }); // update
       final route = MaterialPageRoute(
         // abrir o arquivo para checagem
         fullscreenDialog: true,
@@ -142,7 +149,10 @@ class _CameraPageState extends State<CameraPage> {
       // se nao esta gravando, prepara para gravar
       await _cameraController.prepareForVideoRecording();
       await _cameraController.startVideoRecording();
-      setState(() => _isRecording = true); // começou a gravar
+      setState(() {
+        _isRecording = true;
+        _showButtons = false;
+      }); // começou a gravar
     }
   }
 
