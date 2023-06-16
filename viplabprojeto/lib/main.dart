@@ -63,7 +63,7 @@ class Gravar extends StatelessWidget {
                     height: 40,
                   ),
                   Text(
-                    "CoverEye",
+                    "EyeCheck",
                     style: TextStyle(
                         fontSize: 25,
                         color: Color.fromRGBO(0, 74, 173, 1),
