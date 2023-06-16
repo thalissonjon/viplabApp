@@ -16,112 +16,206 @@ import csv
 
 from urllib.parse import urlparse, parse_qs
 
-# Run the other script
 
+video_data = []
 
 @csrf_exempt
 def submit_link(request):
     if request.method == 'POST':
-        # link = request.POST.get('link')
-        #recupera o path atual de trabalho
         path_current = os.getcwd()
+        path_input = os.path.join(path_current, 'input')
+        path_output = os.path.join(path_current, 'output')
 
-        #diretorio dos videos para serem processados
-        path_input = os.path.join(path_current,'input')
+        if not os.path.isdir(os.path.join(path_current, "input")):
+            os.mkdir(os.path.join(path_current, "input"))
+            path_input = os.path.join(path_current, "input")
+            print("Diretório de entrada foi criado, insira os vídeos no diretório de entrada.")
 
-        #diretorio principal de resultados
-        path_output = os.path.join(path_current,'output')
+        if not os.path.isdir(os.path.join(path_current, "output")):
+            os.mkdir(os.path.join(path_current, "output"))
+            path_output = os.path.join(path_current, "output")
+            print("Diretório de saída foi criado.")
 
-        # verifica se o diretorio de entrada existe, senão existir cria
-        if not os.path.isdir(os.path.join(path_current,"input")):
-            os.mkdir(os.path.join(path_current,"input"))
-            path_input = os.path.join(path_current,"input")
-            print("Diretorio de entrada foi criado, insira os videos no diretorio de entrada.")
-
-        # #verifica se o diretorio de saída existe, senão existr cria
-        if not os.path.isdir(os.path.join(path_current,"output")):
-            os.mkdir(os.path.join(path_current,"output"))
-            path_output = os.path.join(path_current,"output")
-            print("Diretorio de saída foi criado.")
-        
-        # pega o request como uma string
-        # link = request.body.decode() #temporario
         request_body = request.body.decode()
-
-        # passa como um json object
         params = json.loads(request_body)
         link = params["link"]
-
-        # extraindo o link do firebase do json object
-        params = json.loads(request.body)
         saveVideo_path = 'C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/input'
-        
-        parsed_url = urlparse(link)
-        parsed_query = parse_qs(parsed_url.query) #transforma em dicionario de parametros (depois do ? > token)
-        filename = parsed_query['token'][0]
 
-        print(filename)
-        file_path = os.path.join(saveVideo_path, filename+".mp4") # setar nome do video como horario local // hash pra cada requisiçao
+        parsed_url = urlparse(link)
+        parsed_query = parse_qs(parsed_url.query)
+        # filename = parsed_query['token'][0]
+        filename = '20140106_155822' #testando com video sem gra var
+        file_path = os.path.join(saveVideo_path, filename + ".mp4")
 
         response = requests.get(link)
-        
-        print(link)
+
         # salvar video na pasta
         # with open(file_path, "wb") as f:
         #     f.write(response.content)
-            # response.raw.decode_content = True
-            # shutil.copyfileobj(response.raw, file)
-        
+
         response.close()
-        folder_path = "output"
-        # apagar arquivos na pasta de output
-        for filename in os.listdir(folder_path):
-                file_path = os.path.join(folder_path, filename)
-                if os.path.isfile(file_path):
-                 
-                    os.remove(file_path)
+        video_path = 'input/' + filename +".mp4"
+        # subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename])
 
-        subprocess.run(["python", "static/yolov5/source/strabismus_detection.py"])
-
-      
+        video_data.append({
+            'video_name': filename + ".mp4",
+            # 'video_path': 'input/' + filename +".mp4",
+            'csv_path': 'output/' + filename + ".csv",
+            'client_ip': request.META['REMOTE_ADDR']
+        })
+        
+        print(video_data)
+        print("o tamanho é " + len(video_data))
+        
         return HttpResponse(link, status=200)
 
+# @csrf_exempt
+# def submit_link(request):
+#     if request.method == 'POST':
+#         # link = request.POST.get('link')
+#         #recupera o path atual de trabalho
+#         path_current = os.getcwd()
+
+#         #diretorio dos videos para serem processados
+#         path_input = os.path.join(path_current,'input')
+
+#         #diretorio principal de resultados
+#         path_output = os.path.join(path_current,'output')
+
+#         # verifica se o diretorio de entrada existe, senão existir cria
+#         if not os.path.isdir(os.path.join(path_current,"input")):
+#             os.mkdir(os.path.join(path_current,"input"))
+#             path_input = os.path.join(path_current,"input")
+#             print("Diretorio de entrada foi criado, insira os videos no diretorio de entrada.")
+
+#         # #verifica se o diretorio de saída existe, senão existr cria
+#         if not os.path.isdir(os.path.join(path_current,"output")):
+#             os.mkdir(os.path.join(path_current,"output"))
+#             path_output = os.path.join(path_current,"output")
+#             print("Diretorio de saída foi criado.")
+        
+#         # pega o request como uma string
+#         # link = request.body.decode() #temporario
+#         request_body = request.body.decode()
+
+#         # passa como um json object
+#         params = json.loads(request_body)
+#         link = params["link"]
+
+#         # extraindo o link do firebase do json object
+#         params = json.loads(request.body)
+#         saveVideo_path = 'C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/input'
+        
+#         parsed_url = urlparse(link)
+#         parsed_query = parse_qs(parsed_url.query) #transforma em dicionario de parametros (depois do ? > token)
+#         filename = parsed_query['token'][0]
+
+#         print(filename)
+#         file_path = os.path.join(saveVideo_path, filename+".mp4") # setar nome do video como horario local // hash pra cada requisiçao
+
+#         response = requests.get(link)
+        
+#         print(link)
+#         # salvar video na pasta
+#         # with open(file_path, "wb") as f:
+#         #     f.write(response.content)
+#             # response.raw.decode_content = True
+#             # shutil.copyfileobj(response.raw, file)
+        
+#         response.close()
+#         folder_path = "output"
+#         # apagar arquivos na pasta de output
+#         for filename in os.listdir(folder_path):
+#                 file_path = os.path.join(folder_path, filename)
+#                 if os.path.isfile(file_path):
+                 
+#                     os.remove(file_path)
+
+#         subprocess.run(["python", "static/yolov5/source/strabismus_detection.py"])
+
+      
+#         return HttpResponse(link, status=200)
+
+
     elif request.method == 'GET':
-        if os.path.exists('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/output/results.csv') == True:
-            # with open('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/output/'+ filename +'.csv', newline='') as csvfile:
-            with open('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/output/results.csv', newline='') as csvfile:
-                reader = csv.reader(csvfile)
-                data = [row for row in reader]
+        client_ip = request.META['REMOTE_ADDR']
+        matching_video = None
 
-            # print(data)
-            
-            # csv pra json
-            print(data[0][0])
-            print(data[1][0])
-            
-            # Separa as informações do cabeçalho
-            header = data[0][0].split(";")
+        for video in video_data:
+            if video['client_ip'] == client_ip:
+                matching_video = video
+                #print("matching video virou video")
+                break
 
-            # Separa as informações dos valores
-            values = data[1][0].split(";")
+        if matching_video:
+            #print('entrou matching video')
+            csv_path = os.path.join(os.getcwd(), matching_video['csv_path'])
 
-            # Cria um dicionário para associar as informações do cabeçalho com as informações dos valores
-            result = {}
-            for i in range(len(header)):
-                if header[i] not in ["File", "DEp"]:
-                    result[header[i]] = values[i]
+            if os.path.exists(csv_path):
+                with open(csv_path, newline='') as csvfile:
+                    reader = csv.reader(csvfile)
+                    data = [row for row in reader]
 
-            print(result)
-            # response_data = json.dumps(result)
-            
+                header = data[0][0].split(";")
+                values = data[1][0].split(";")
+                result = {}
 
+                for i in range(len(header)):
+                    if header[i] not in ["File", "DEp"]:
+                        result[header[i]] = values[i]
 
-            
-            return JsonResponse(result, safe=False)
-            
+                print(result)
+                print("o tamanho é no get " + str(len(video_data)))
+                # video_data.remove(matching_video)
+                # videoPathRemove = os.path.join('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/input', matching_video['video_name'])
+                # videoPathRemoveN = os.path.normpath(videoPathRemove)
+                # os.remove(videoPathRemoveN)
+                print("o tamanho é pos" + str(len(video_data)))
+
+                return JsonResponse(result, safe=False)
+            else:
+                print("O arquivo de resultados não existe ou ainda não está pronto.")
+                return HttpResponse(content='Algo de errado aconteceu.', status=405)
         else:
-            print("O arquivo de resultados não existe ou ainda não está pronto.")
+            print("Não foi encontrado nenhum vídeo correspondente ao cliente.")
             return HttpResponse(content='Algo de errado aconteceu.', status=405)
+
+    # elif request.method == 'GET':
+    #     if os.path.exists('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/output/results.csv') == True:
+    #         # with open('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/output/'+ filename +'.csv', newline='') as csvfile:
+    #         with open('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/output/results.csv', newline='') as csvfile:
+    #             reader = csv.reader(csvfile)
+    #             data = [row for row in reader]
+
+    #         # print(data)
+            
+    #         # csv pra json
+    #         print(data[0][0])
+    #         print(data[1][0])
+            
+    #         # Separa as informações do cabeçalho
+    #         header = data[0][0].split(";")
+
+    #         # Separa as informações dos valores
+    #         values = data[1][0].split(";")
+
+    #         # Cria um dicionário para associar as informações do cabeçalho com as informações dos valores
+    #         result = {}
+    #         for i in range(len(header)):
+    #             if header[i] not in ["File", "DEp"]:
+    #                 result[header[i]] = values[i]
+
+    #         print(result)
+    #         # response_data = json.dumps(result)
+            
+
+
+            
+    #         return JsonResponse(result, safe=False)
+            
+    #     else:
+    #         print("O arquivo de resultados não existe ou ainda não está pronto.")
+    #         return HttpResponse(content='Algo de errado aconteceu.', status=405)
     # else:
     #     return HttpResponse(content='algo deu errado com o request, metodo errado', status=405)
 
