@@ -50,17 +50,19 @@ dependencies:
   flutter_native_splash: ^2.2.19
   flutter_launcher_icons: ^0.12.0
   flutter_icons: ^1.1.0
+  flutter_local_notifications: ^14.1.1
 
 flutter_native_splash:
   color: "#FFFFFF"
   android_12:
-    image: "lib/assets/splash.png"
-  image: "lib/assets/splash.png"
+    image: "assets/eyecheck_logo.png"
+  image: "assets/eyecheck_logo.png"
   android: true
   ios: true
 
 flutter_icons:
-  image_path: "lib/assets/icon.png"
+  image_path: "assets/eyecheck_logo.png"
+  android: true
   ios: true
   remove_alpha_ios: true
   adaptive_icon_background: "#FFFFFF"

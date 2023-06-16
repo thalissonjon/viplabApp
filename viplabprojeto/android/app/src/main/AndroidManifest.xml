@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.viplabprojeto">
    <application
-        android:label="viplabprojeto"
+        android:label="EyeCheck"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

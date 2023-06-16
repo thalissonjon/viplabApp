@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:viplabprojeto/pages/results.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -11,7 +12,11 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   bool _isLoading = true;
 
+  FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
+
   Future<void> _loadResults() async {
+    const String title = 'Seu resultado está pronto!';
+    const String body = 'Abra o aplicativo para ver o resultado do seu teste!';
     // checar a api a cada 10 segundos
     const interval = Duration(seconds: 10);
 
@@ -26,6 +31,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
           _isLoading =
               false; // Definir o estado como "false" para interromper o carregamento
         });
+
+        _showNotification(title, body);
+
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Results()));
         break;
@@ -40,6 +48,37 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     _loadResults();
+    _initializeLocalNotifications();
+  }
+
+  Future<void> _initializeLocalNotifications() async {
+    const int notificationId = 0;
+    const String channelId = 'ready';
+    const String channelName = 'notif';
+    const String title = 'Seu resultado está pronto!';
+    const String body = 'Abra o aplicativo para ver o resultado do seu teste.';
+
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    _flutterLocalNotificationsPlugin ??= FlutterLocalNotificationsPlugin();
+    await _flutterLocalNotificationsPlugin!.initialize(initializationSettings);
+  }
+
+  Future<void> _showNotification(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('ready', 'notif',
+            importance: Importance.high, priority: Priority.high);
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await _flutterLocalNotificationsPlugin!.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+    );
   }
 
   @override

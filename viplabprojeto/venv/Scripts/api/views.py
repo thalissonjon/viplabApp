@@ -20,6 +20,18 @@ from urllib.parse import urlparse, parse_qs
 video_data = []
 
 @csrf_exempt
+def remove_video(client_ip):
+    for video in video_data:
+        if video['client_ip'] == client_ip:
+            video_name = video['video_name']
+            video_path = os.path.join('input', video_name)
+            if os.path.exists(video_path):
+                os.remove(video_path)
+            video_data.remove(video)
+
+            return True
+    return False
+
 def submit_link(request):
     if request.method == 'POST':
         path_current = os.getcwd()
@@ -43,7 +55,7 @@ def submit_link(request):
 
         parsed_url = urlparse(link)
         parsed_query = parse_qs(parsed_url.query)
-        # filename = parsed_query['token'][0]
+        # filename = parsed_query['token'][0] # criando token para cada video
         filename = '20140106_155822' #testando com video sem gra var
         file_path = os.path.join(saveVideo_path, filename + ".mp4")
 
@@ -56,6 +68,11 @@ def submit_link(request):
         response.close()
         video_path = 'input/' + filename +".mp4"
         # subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename])
+
+        if remove_video(client_ip):
+            print(f"Vídeo associado ao cliente {client_ip} foi removido com sucesso.")
+        else:
+            print(f"Não foi encontrado um vídeo associado ao cliente {client_ip}.")
 
         video_data.append({
             'video_name': filename + ".mp4",
