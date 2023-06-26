@@ -17,6 +17,7 @@ import csv
 from urllib.parse import urlparse, parse_qs
 
 
+
 video_data = []
 
 @csrf_exempt
@@ -51,28 +52,30 @@ def submit_link(request):
         request_body = request.body.decode()
         params = json.loads(request_body)
         link = params["link"]
+        token = params["link"]
+        print("token = ", token)
         saveVideo_path = 'C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/input'
 
         parsed_url = urlparse(link)
         parsed_query = parse_qs(parsed_url.query)
-        # filename = parsed_query['token'][0] # criando token para cada video
+        # filename = token # criando token para cada video
         filename = '20140106_155822' #testando com video sem gra var
         file_path = os.path.join(saveVideo_path, filename + ".mp4")
 
         response = requests.get(link)
 
         # salvar video na pasta
-        # with open(file_path, "wb") as f:
-        #     f.write(response.content)
+        with open(file_path, "wb") as f:
+            f.write(response.content)
 
         response.close()
         video_path = 'input/' + filename +".mp4"
-        # subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename])
+        subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename])
 
-        if remove_video(client_ip):
-            print(f"Vídeo associado ao cliente {client_ip} foi removido com sucesso.")
-        else:
-            print(f"Não foi encontrado um vídeo associado ao cliente {client_ip}.")
+        # if remove_video(client_ip):
+        #     print(f"Vídeo associado ao cliente {client_ip} foi removido com sucesso.")
+        # else:
+        #     print(f"Não foi encontrado um vídeo associado ao cliente {client_ip}.")
 
         video_data.append({
             'video_name': filename + ".mp4",

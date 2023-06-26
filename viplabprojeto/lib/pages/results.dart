@@ -13,6 +13,7 @@ class Results extends StatefulWidget {
 
 class _ResultsState extends State<Results> {
   List<Map<String, dynamic>> data = [];
+  bool hasResults = false;
 
   Future<void> resultadosAPI() async {
     final response =
@@ -22,6 +23,8 @@ class _ResultsState extends State<Results> {
     setState(() {
       this.data = [data];
     });
+
+    
     print("#####################################");
     print(data);
     print(data['File']);
@@ -42,6 +45,17 @@ class _ResultsState extends State<Results> {
     print(finalList[1]);
   }
 
+  void _handleVoltarButton() {
+    setState(() {
+      hasResults = true;
+    });
+    
+    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Gravar(hasResults: true)),
+                  );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -60,78 +74,6 @@ class _ResultsState extends State<Results> {
     super.dispose();
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: Container(
-  //         padding: const EdgeInsets.only(
-  //           top: 60,
-  //           left: 20,
-  //           right: 20,
-  //         ),
-  //         child: Column(
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 Text("Resultados",
-  //                     style:
-  //                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-  //               ],
-  //             ),
-  //             Expanded(
-  //               child: ListView.builder(
-  //                   itemCount: data.length,
-  //                   itemBuilder: (BuildContext context, int index) {
-  //                     final Map<String, dynamic> row = data[index];
-  //                     List<Widget> rowWidgets = [];
-  //                     return Row(
-  //                       children: [
-  //                         Container(
-  //                           height: 170,
-  //                           width: 200,
-  //                           decoration: BoxDecoration(
-  //                               color: Colors.white,
-  //                               borderRadius: BorderRadius.circular(15),
-  //                               boxShadow: [
-  //                                 BoxShadow(
-  //                                     blurRadius: 3,
-  //                                     offset: Offset(5, 5),
-  //                                     color: Color.fromRGBO(0, 74, 173, 0.5)),
-  //                                 BoxShadow(
-  //                                     blurRadius: 3,
-  //                                     offset: Offset(-5, -5),
-  //                                     color: Color.fromRGBO(0, 74, 173, 0.5))
-  //                               ]),
-  //                           child: Align(
-  //                               alignment: Alignment.topCenter,
-  //                               child: Column(
-  //                                 children: [
-  //                                   Center(
-  //                                       child: Text("DHE",
-  //                                           style: TextStyle(
-  //                                               fontSize: 14,
-  //                                               fontWeight: FontWeight.w600,
-  //                                               color: Color.fromRGBO(
-  //                                                   0, 74, 173, 1)))),
-  //                                   Center(
-  //                                       child: Text(
-  //                                     row[3].toString(),
-  //                                     style: TextStyle(
-  //                                         fontSize: 13,
-  //                                         fontWeight: FontWeight.w300,
-  //                                         color: Color.fromRGBO(0, 74, 173, 1)),
-  //                                   ))
-  //                                 ],
-  //                               )),
-  //                         )
-  //                       ],
-  //                     );
-  //                   }),
-  //             )
-  //           ],
-  //         )),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -145,7 +87,7 @@ class _ResultsState extends State<Results> {
           top: 60,
           left: 20,
           right: 20,
-          bottom: 40, 
+          bottom: 40,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,12 +167,8 @@ class _ResultsState extends State<Results> {
             // SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Gravar()),
-                  );
-                },
+                onPressed:
+                  _handleVoltarButton,
                 child: Text(
                   "Voltar para a página inicial",
                   style: TextStyle(

@@ -11,7 +11,7 @@ import 'package:viplabprojeto/pages/loading.dart';
 import 'package:viplabprojeto/pages/results.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-
+import 'package:uuid/uuid.dart';
 // from django.views.decorators.csrf import csrf_exempt;
 
 // import 'package:camera/camera.dart';
@@ -19,7 +19,6 @@ import 'package:flutter/services.dart';
 // replay no video gravado
 class VideoPage extends StatefulWidget {
   final String filePath;
-
   const VideoPage({Key? key, required this.filePath}) : super(key: key);
 
   @override
@@ -71,6 +70,7 @@ class _VideoPageState extends State<VideoPage> {
 
   Future uploadVideo() async {
     final video = File(widget.filePath);
+    var token = Uuid().v4();
 
     final fileName = basename(video.path);
     final destination = 'videosCoverTest/$fileName';
@@ -89,40 +89,14 @@ class _VideoPageState extends State<VideoPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       headers: <String, String>{'Content-Type': 'text/plain'},
-      body: jsonEncode(<String, String>{'link': url}),
-      // headers: {
-      //   'Authorization': 'b087edb9d25b28b182679fe3cecd17590835e915',
-      //   HttpHeaders.contentTypeHeader: 'application/json'
-      // }
+      body: jsonEncode(<String, String>{'link': url, 'token': token}),
     );
     print(response.statusCode);
     return response;
 
     print(
         "\n----------------------------------------\nLink do download $url \n ----------------------------------------");
-    /*
-    final url = 'http://192.168.100.23/link';
-
-    print(
-        "#############################################################################################");
-    var response = await http.post(
-      Uri.parse(url),
-      body: {'url': urlDownload.toString()},
-    );
-    print(
-        "#############################################################################################");
-    print(response.statusCode);
-    print(response.body);
-    // checar o status
-    if (response.statusCode == 200) {
-      print(
-          "\n----------------------------------------\nEnviando para a API \n ----------------------------------------");
-      print(url);
-    } else {
-      print("Algo deu errado!");
-    }
-  }
-  */
+    
   }
 
   Future<void> resultadosAPI() async {

@@ -6,11 +6,8 @@ class CoverTestinfo extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(
-            top: 60,
-            left: 20,
-            right: 20,
-          ),
+          padding:
+              const EdgeInsets.only(top: 60, left: 20, right: 20, bottom: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -26,7 +23,7 @@ class CoverTestinfo extends StatelessWidget {
                 height: 30,
               ),
               Text(
-                'O aplicativo oferece a possibilidade de realizar um autoteste para detecção de estrabismo utilizando a câmera frontal. '
+                'O aplicativo oferece a possibilidade de realizar um auto teste para detecção de estrabismo utilizando a câmera frontal. '
                 'No entanto, se preferir, outra pessoa pode fazer a gravação utilizando a câmera traseira.\n\n'
                 'Para realizar o teste adequadamente, é altamente recomendado seguir os seguintes passos:\n',
                 style: TextStyle(
@@ -57,7 +54,7 @@ class CoverTestinfo extends StatelessWidget {
                 height: 30,
               ),
               Center(
-                child: Image.asset('assets/gifInfo.gif'),
+                child: Image.asset('assets/covertest.gif'),
               ),
               SizedBox(
                 height: 40,
