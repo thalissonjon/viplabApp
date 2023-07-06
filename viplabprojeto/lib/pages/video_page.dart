@@ -4,17 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-//import 'package:viplabprojeto/main.dart';
 import 'package:viplabprojeto/api/firebase_api.dart';
 import 'package:viplabprojeto/pages/loading.dart';
-//import 'package:viplabprojeto/pages/firebase_list.dart';
-import 'package:viplabprojeto/pages/results.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
-// from django.views.decorators.csrf import csrf_exempt;
-
-// import 'package:camera/camera.dart';
 
 // replay no video gravado
 class VideoPage extends StatefulWidget {
@@ -27,6 +21,7 @@ class VideoPage extends StatefulWidget {
 
 class _VideoPageState extends State<VideoPage> {
   late VideoPlayerController _videoPlayerController;
+  var token = Uuid().v4();
 
   @override
   void initState() {
@@ -70,7 +65,6 @@ class _VideoPageState extends State<VideoPage> {
 
   Future uploadVideo() async {
     final video = File(widget.filePath);
-    var token = Uuid().v4();
 
     final fileName = basename(video.path);
     final destination = 'videosCoverTest/$fileName';
@@ -91,12 +85,15 @@ class _VideoPageState extends State<VideoPage> {
       headers: <String, String>{'Content-Type': 'text/plain'},
       body: jsonEncode(<String, String>{'link': url, 'token': token}),
     );
+    print("############################## VIDEOPAGE");
+    print("############################## VIDEOPAGE");
+    print("############################## VIDEOPAGE");
+    print("############################## VIDEOPAGE");
+    print("############################## VIDEOPAGE");
+    print(token);
+    
     print(response.statusCode);
     return response;
-
-    print(
-        "\n----------------------------------------\nLink do download $url \n ----------------------------------------");
-    
   }
 
   Future<void> resultadosAPI() async {
@@ -149,7 +146,8 @@ class _VideoPageState extends State<VideoPage> {
               Navigator.push(
                   // context, MaterialPageRoute(builder: (context) => Gravar()));
                   context,
-                  MaterialPageRoute(builder: (context) => LoadingScreen()));
+                  MaterialPageRoute(
+                      builder: (context) => LoadingScreen(token: token)));
               // sendLink(urlDownload);
             },
           )

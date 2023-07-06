@@ -52,25 +52,25 @@ def submit_link(request):
         request_body = request.body.decode()
         params = json.loads(request_body)
         link = params["link"]
-        token = params["link"]
+        token = params["token"]
         print("token = ", token)
         saveVideo_path = 'C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/input'
 
         parsed_url = urlparse(link)
         parsed_query = parse_qs(parsed_url.query)
-        # filename = token # criando token para cada video
+        # filename = token # criando token para cada video (mudar)
         filename = '20140106_155822' #testando com video sem gra var
         file_path = os.path.join(saveVideo_path, filename + ".mp4")
 
         response = requests.get(link)
 
-        # salvar video na pasta
-        with open(file_path, "wb") as f:
-            f.write(response.content)
+        # salvar video na pasta (mdar)
+        # with open(file_path, "wb") as f:
+        #     f.write(response.content)
 
         response.close()
         video_path = 'input/' + filename +".mp4"
-        subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename])
+        # subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename]) (mudar)
 
         # if remove_video(client_ip):
         #     print(f"Vídeo associado ao cliente {client_ip} foi removido com sucesso.")
@@ -78,10 +78,10 @@ def submit_link(request):
         #     print(f"Não foi encontrado um vídeo associado ao cliente {client_ip}.")
 
         video_data.append({
+            'token': token,
             'video_name': filename + ".mp4",
-            # 'video_path': 'input/' + filename +".mp4",
             'csv_path': 'output/' + filename + ".csv",
-            'client_ip': request.META['REMOTE_ADDR']
+
         })
         
         print(video_data)
@@ -161,8 +161,14 @@ def submit_link(request):
         client_ip = request.META['REMOTE_ADDR']
         matching_video = None
 
+        token = request.META.get('HTTP_AUTHORIZATION')
+        _, token = token.split(None, 1)
+        
+
+        print(token)
+
         for video in video_data:
-            if video['client_ip'] == client_ip:
+            if video['token'] == token:
                 matching_video = video
                 #print("matching video virou video")
                 break

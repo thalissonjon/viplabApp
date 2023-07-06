@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -5,6 +7,10 @@ import 'package:viplabprojeto/pages/results.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LoadingScreen extends StatefulWidget {
+  final String token;
+
+  LoadingScreen({required this.token});
+
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
@@ -19,11 +25,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
     const String body = 'Abra o aplicativo para ver o resultado do seu teste!';
     // checar a api a cada 10 segundos
     const interval = Duration(seconds: 10);
+    String apiUrl = 'http://192.168.100.23:8000/link/';
 
     while (_isLoading) {
       // requisição é realizada caso os resultados estejam prontos
-      final response =
-          await http.get(Uri.parse('http://192.168.100.23:8000/link/'));
+      // final response =
+      //     await http.get(Uri.parse('http://192.168.100.23:8000/link/'));
+
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+        },
+      );
+
+      print("##############################");
+      print(widget.token);
 
       // verificar status
       if (response.statusCode == 200) {
