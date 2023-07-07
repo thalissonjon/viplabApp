@@ -17,6 +17,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   bool _isLoading = true;
+  bool fromReq = true;
 
   FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
 
@@ -51,8 +52,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
         _showNotification(title, body);
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Results()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Results(fromReq: fromReq)));
         break;
       }
 

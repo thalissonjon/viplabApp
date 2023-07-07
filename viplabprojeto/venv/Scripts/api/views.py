@@ -11,7 +11,7 @@ import requests
 import shutil
 import subprocess
 import json
-
+import time
 import csv
 
 from urllib.parse import urlparse, parse_qs
@@ -70,6 +70,14 @@ def submit_link(request):
 
         response.close()
         video_path = 'input/' + filename +".mp4"
+
+        video_data.append({
+            'token': filename,
+            'video_name': filename + ".mp4",
+            'csv_path': 'output/' + filename + ".csv",
+
+        })
+        
         # subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename]) (mudar)
 
         # if remove_video(client_ip):
@@ -77,15 +85,9 @@ def submit_link(request):
         # else:
         #     print(f"Não foi encontrado um vídeo associado ao cliente {client_ip}.")
 
-        video_data.append({
-            'token': token,
-            'video_name': filename + ".mp4",
-            'csv_path': 'output/' + filename + ".csv",
-
-        })
+        
         
         print(video_data)
-        print("o tamanho é " + len(video_data))
         
         return HttpResponse(link, status=200)
 
@@ -158,18 +160,22 @@ def submit_link(request):
 
 
     elif request.method == 'GET':
-        client_ip = request.META['REMOTE_ADDR']
         matching_video = None
+        found = False
 
         token = request.META.get('HTTP_AUTHORIZATION')
-        _, token = token.split(None, 1)
+        if token:
+            _, token = token.split(None, 1)
+            print(token)
+        else:
+            print('Algo ocorreu ou o token não foi criado com sucesso.')
         
 
-        print(token)
-
         for video in video_data:
-            if video['token'] == token:
+            # if video['token'] == token: (mudar)
+            if token == token: # so pra passar
                 matching_video = video
+                # found = True
                 #print("matching video virou video")
                 break
 
@@ -192,11 +198,12 @@ def submit_link(request):
 
                 print(result)
                 print("o tamanho é no get " + str(len(video_data)))
+            
                 # video_data.remove(matching_video)
                 # videoPathRemove = os.path.join('C:/Users/Cliente/Documents/GitHub/viplabApp/viplabprojeto/venv/scripts/input', matching_video['video_name'])
                 # videoPathRemoveN = os.path.normpath(videoPathRemove)
                 # os.remove(videoPathRemoveN)
-                print("o tamanho é pos" + str(len(video_data)))
+                print("o tamanho é pos " + str(len(video_data)))
 
                 return JsonResponse(result, safe=False)
             else:

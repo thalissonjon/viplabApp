@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:viplabprojeto/pages/covertestinfo.dart';
 import 'package:viplabprojeto/pages/results.dart';
+import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 // import 'package:viplabprojeto/pages/video_page.dart';
 
@@ -37,18 +40,55 @@ Future main() async {
 class MyApp extends StatelessWidget {
   final bool hasResults;
 
+  Future<bool> verificarPasta() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final pastaJson = Directory('${directory.path}/json');
+
+    if (await pastaJson.exists()) {
+      final stream = pastaJson.list();
+      await for (var item in stream) {
+        if (item is File) {
+          // tem arquivo
+          print("tem arquivo");
+          return true;
+        }
+      }
+    }
+
+    // pasta vazia ou n existe
+    print("sem arquivo ou pasta inexistente");
+    return false;
+  }
+
   MyApp({this.hasResults = false});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Gravar(hasResults: hasResults),
+    return FutureBuilder<bool>(
+      future: verificarPasta(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData) {
+          final bool hasResults = snapshot.data ?? false;
+          return MaterialApp(
+            home: Gravar(hasResults: hasResults),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
+  // Widget build(BuildContext context) {
+
+  //   return MaterialApp(
+  //     home: Gravar(hasResults: hasResults),
+  //   );
+  // }
 }
 
 class Gravar extends StatelessWidget {
   late bool hasResults;
+  final bool fromReq = false;
 
   Gravar({this.hasResults = false, Key? key}) : super(key: key);
 
@@ -263,8 +303,11 @@ class Gravar extends StatelessWidget {
               ElevatedButton(
                 onPressed: hasResults
                     ? () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Results()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Results(fromReq: fromReq)));
                       }
                     : null,
                 child: Text(

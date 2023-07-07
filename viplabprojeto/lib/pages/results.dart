@@ -3,9 +3,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:viplabprojeto/main.dart';
+import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 
 class Results extends StatefulWidget {
-  Results({Key? key}) : super(key: key);
+  final bool fromReq;
+  Results({required this.fromReq});
 
   @override
   _ResultsState createState() => _ResultsState();
@@ -15,45 +20,106 @@ class _ResultsState extends State<Results> {
   List<Map<String, dynamic>> data = [];
   bool hasResults = false;
 
-  Future<void> resultadosAPI() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.100.23:8000/link/'));
-    // final Map<String, dynamic> data = json.decode(response.body);
-    final Map<String, dynamic> data = jsonDecode(response.body);
-    setState(() {
-      this.data = [data];
-    });
+  Future<void> saveJsonData(Map<String, dynamic> jsonData) async {
+    print("entrou na funçao de save");
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/json/resultado.json');
+      final pastaJson = Directory('${directory.path}/json');
 
-    
+      if (!(await pastaJson.exists())) {
+        await pastaJson.create(recursive: true);
+        print('pasta json criada com sucesso em: ${pastaJson.path}');
+      } else {
+        print('pasta json já existe em: ${pastaJson.path}');
+      }
+
+      String folderPath = directory.path + '/json';
+      Directory folder = Directory(folderPath);
+
+      // verificar se a pasta existe
+      if (await folder.exists()) {
+        List<FileSystemEntity> files = folder.listSync();
+        print(files);
+
+        // itera sobre os arquivos e remove
+        for (FileSystemEntity file in files) {
+          file.deleteSync();
+        }
+
+        print('Arquivos removidos com sucesso.');
+      } else {
+        print('A pasta está vazia.');
+      }
+      final jsonString = jsonEncode(jsonData);
+
+      await file.writeAsString(jsonString);
+
+      print('Arquivo JSON salvo com sucesso em: ${file.path}');
+    } catch (e) {
+      print('Erro ao salvar o arquivo JSON: $e');
+    }
+  }
+
+  Future<void> resultadosAPI() async {
+    if (widget.fromReq == true) {
+      final response =
+          await http.get(Uri.parse('http://192.168.100.23:8000/link/'));
+      // final Map<String, dynamic> data = json.decode(response.body);
+      final Map<String, dynamic> data = jsonDecode(response.body);
+
+      DateTime now = DateTime.now();
+      String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+      data['Data'] = formattedDateTime;
+
+      print("indo entrar na funçao");
+      saveJsonData(data);
+
+      setState(() {
+        this.data = [data];
+      });
+    } else {
+      print("############################ veio da pagina principal");
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/json/resultado.json');
+      final jsonContent = await file.readAsString();
+      final data = jsonDecode(jsonContent) as Map<String, dynamic>;
+
+      setState(() {
+        this.data = [data];
+      });
+    }
     print("#####################################");
     print(data);
-    print(data['File']);
 
-    String headers = data[0].cast<String>(); // primeiro item da primeira lista
-    String values = data[1].cast<String>(); // primeiro item da segunda lista
-    // List<String> headerList = headers.split(";"); // separa o cabeçalho por ";"
-    // List<String> valuesList = values.split(";"); // separa os valores por ";"
-    List<String> finalList = [];
+    // String headers = data[0].cast<String>(); // primeiro item da primeira lista
+    // String values = data[1].cast<String>(); // primeiro item da segunda lista
+    // // List<String> headerList = headers.split(";"); // separa o cabeçalho por ";"
+    // // List<String> valuesList = values.split(";"); // separa os valores por ";"
+    // List<String> finalList = [];
 
-    for (int i = 0; i < headers.length; i++) {
-      String header = headers[i];
-      String value = values[i];
-      finalList.add('$header: $value');
-    }
+    // print("for vai entrar");
+    // for (int i = 0; i < headers.length && i < values.length; i++) {
+    //   print("for");
+    //   String header = headers[i];
+    //   String value = values[i];
+    //   finalList.add('$header: $value');
+    // }
 
-    print(finalList);
-    print(finalList[1]);
+    // print(finalList);
+    // print(finalList[1]);
   }
 
   void _handleVoltarButton() {
     setState(() {
       hasResults = true;
     });
-    
+
     Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Gravar(hasResults: true)),
-                  );
+      context,
+      MaterialPageRoute(builder: (context) => Gravar(hasResults: true)),
+    );
   }
 
   @override
@@ -167,8 +233,7 @@ class _ResultsState extends State<Results> {
             // SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed:
-                  _handleVoltarButton,
+                onPressed: _handleVoltarButton,
                 child: Text(
                   "Voltar para a página inicial",
                   style: TextStyle(
