@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:viplabprojeto/pages/results.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
+import 'package:viplabprojeto/main.dart';
 
 class LoadingScreen extends StatefulWidget {
   final String token;
@@ -26,14 +28,46 @@ class _LoadingScreenState extends State<LoadingScreen> {
     const String body = 'Abra o aplicativo para ver o resultado do seu teste!';
     // checar a api a cada 10 segundos
     const interval = Duration(seconds: 10);
+    int timerLim = 0;
     String apiUrl = 'http://192.168.100.23:8000/link/';
 
     while (_isLoading) {
+      print('###################### timer');
+      print(timerLim);
+      if (timerLim == 60) {
+        // excedeu o tempo limite de 10 minutos
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Erro"),
+              content: Text(
+                  "Parece que ocorreu um problema no processamento do seu vídeo."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Gravar(
+                                hasResults: false))); // Fechar o AlertDialog
+                  },
+                  child: Text("Ok"),
+                ),
+              ],
+            );
+          },
+        );
+        setState(() {
+          _isLoading =
+              false; // Definir o estado como "false" para interromper o carregamento
+        });
+      }
       // requisição é realizada caso os resultados estejam prontos
       // final response =
       //     await http.get(Uri.parse('http://192.168.100.23:8000/link/'));
 
-      final response = await http.get(
+      final response = await http.get( 
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer ${widget.token}',
@@ -55,9 +89,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => Results(fromReq: fromReq)));
         break;
-      }
+      } 
 
       //aguardar o intervalo pra poder verificar novamente
+      timerLim++;
       await Future.delayed(interval);
     }
   }

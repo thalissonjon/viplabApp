@@ -162,7 +162,7 @@ class _ResultsState extends State<Results> {
               'Resultados',
               style: TextStyle(
                 fontSize: 25,
-                color: Color.fromRGBO(0, 74, 173, 1),
+                color: Color.fromRGBO(9, 9, 121, 0.9),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -206,7 +206,7 @@ class _ResultsState extends State<Results> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
-                                  color: Color.fromRGBO(0, 74, 173, 1),
+                                  color: Color.fromRGBO(9, 9, 121, 0.9),
                                 ),
                               ),
                               Text(
@@ -214,7 +214,7 @@ class _ResultsState extends State<Results> {
                                 style: TextStyle(
                                   color: Color.fromRGBO(0, 74, 173, 1),
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],
@@ -243,7 +243,7 @@ class _ResultsState extends State<Results> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(0, 74, 173, 1),
+                  backgroundColor: Color.fromRGBO(9, 9, 121, 0.9),
                   padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),

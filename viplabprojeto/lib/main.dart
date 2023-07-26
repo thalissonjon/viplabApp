@@ -139,9 +139,9 @@ class Gravar extends StatelessWidget {
                   height: 210,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
-                        Color.fromRGBO(0, 74, 173, 1),
-                        Color.fromRGBO(12, 110, 240, 1),
-                        // Color.fromRGBO(0, 110, 173, 1)
+                        Color.fromRGBO(2, 0, 36, 0.95),
+                        Color.fromRGBO(9, 9, 121, 0.9),
+                        Color.fromRGBO(0, 200, 255, 1)
                       ]),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
@@ -202,7 +202,7 @@ class Gravar extends StatelessWidget {
                                 child: Text("Saiba mais",
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: Color.fromRGBO(12, 110, 240, 1),
+                                        color: Color.fromRGBO(9, 9, 121, 0.9),
                                         fontWeight: FontWeight.w400)),
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
@@ -287,7 +287,7 @@ class Gravar extends StatelessWidget {
                                       fontWeight: FontWeight.w400)),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      Color.fromRGBO(12, 110, 240, 1),
+                                      Color.fromRGBO(9, 9, 121, 0.85),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 25, vertical: 5),
                                   shape: RoundedRectangleBorder(
@@ -321,7 +321,7 @@ class Gravar extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor: hasResults
                       ? MaterialStateProperty.all<Color>(
-                          Color.fromRGBO(12, 110, 240, 0.8))
+                          Color.fromRGBO(9, 9, 121, 0.85))
                       : MaterialStateProperty.all<Color>(Colors.grey),
                   padding: MaterialStateProperty.all<EdgeInsets>(
                       EdgeInsets.symmetric(horizontal: 60, vertical: 15)),
@@ -350,7 +350,7 @@ class Gravar extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(16, 16, 16, 1),
+                        color: Color.fromRGBO(9, 9, 121, 0.9),
                       ),
                     ),
                   ],
