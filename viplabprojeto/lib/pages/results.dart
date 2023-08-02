@@ -93,22 +93,6 @@ class _ResultsState extends State<Results> {
     print("#####################################");
     print(data);
 
-    // String headers = data[0].cast<String>(); // primeiro item da primeira lista
-    // String values = data[1].cast<String>(); // primeiro item da segunda lista
-    // // List<String> headerList = headers.split(";"); // separa o cabeçalho por ";"
-    // // List<String> valuesList = values.split(";"); // separa os valores por ";"
-    // List<String> finalList = [];
-
-    // print("for vai entrar");
-    // for (int i = 0; i < headers.length && i < values.length; i++) {
-    //   print("for");
-    //   String header = headers[i];
-    //   String value = values[i];
-    //   finalList.add('$header: $value');
-    // }
-
-    // print(finalList);
-    // print(finalList[1]);
   }
 
   void _handleVoltarButton() {
@@ -162,7 +146,7 @@ class _ResultsState extends State<Results> {
               'Resultados',
               style: TextStyle(
                 fontSize: 25,
-                color: Color.fromRGBO(9, 9, 121, 0.9),
+                color: Color.fromRGBO(0, 74, 173, 1),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -206,7 +190,7 @@ class _ResultsState extends State<Results> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
-                                  color: Color.fromRGBO(9, 9, 121, 0.9),
+                                  color: Color.fromRGBO(0, 74, 173, 1),
                                 ),
                               ),
                               Text(
@@ -243,7 +227,7 @@ class _ResultsState extends State<Results> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(9, 9, 121, 0.9),
+                  backgroundColor: Color.fromRGBO(0, 74, 173, 1),
                   padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),

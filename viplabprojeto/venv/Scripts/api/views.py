@@ -58,15 +58,15 @@ def submit_link(request):
 
         parsed_url = urlparse(link)
         parsed_query = parse_qs(parsed_url.query)
-        # filename = token # criando token para cada video (mudar)
-        filename = '20140106_155822' #testando com video sem gra var
+        filename = token # criando token para cada video
+        # filename = '20140106_155822' #testando com video sem gravar
         file_path = os.path.join(saveVideo_path, filename + ".mp4")
 
         response = requests.get(link)
 
-        # salvar video na pasta (mdar)
-        # with open(file_path, "wb") as f:
-        #     f.write(response.content)
+        # salvar video na pasta
+        with open(file_path, "wb") as f:
+            f.write(response.content)
 
         response.close()
         video_path = 'input/' + filename +".mp4"
@@ -78,7 +78,7 @@ def submit_link(request):
 
         })
         
-        # subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename]) (mudar)
+        subprocess.run(["python", "static/yolov5/source/strabismus_detection.py", filename])
 
         # if remove_video(client_ip):
         #     print(f"Vídeo associado ao cliente {client_ip} foi removido com sucesso.")
@@ -172,8 +172,8 @@ def submit_link(request):
         
 
         for video in video_data:
-            # if video['token'] == token: (mudar)
-            if token == token: # so pra passar
+            if video['token'] == token: 
+            # if token == token: # teste
                 matching_video = video
                 # found = True
                 #print("matching video virou video")

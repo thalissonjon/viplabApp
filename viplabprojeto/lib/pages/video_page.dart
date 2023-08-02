@@ -85,8 +85,7 @@ class _VideoPageState extends State<VideoPage> {
       headers: <String, String>{'Content-Type': 'text/plain'},
       body: jsonEncode(<String, String>{'link': url, 'token': token}),
     );
-   
-    
+
     print(response.statusCode);
     return response;
   }
