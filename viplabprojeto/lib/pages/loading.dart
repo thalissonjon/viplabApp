@@ -67,7 +67,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       // final response =
       //     await http.get(Uri.parse('http://192.168.100.23:8000/link/'));
 
-      final response = await http.get( 
+      final response = await http.get(
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer ${widget.token}',
@@ -89,7 +89,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => Results(fromReq: fromReq)));
         break;
-      } 
+      }
 
       //aguardar o intervalo pra poder verificar novamente
       timerLim++;
@@ -140,41 +140,48 @@ class _LoadingScreenState extends State<LoadingScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(
-          top: 60,
-          left: 20,
-          right: 20,
-          bottom: 40,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'O processo demorará alguns minutos para gerar o resultado.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: Color.fromRGBO(37, 125, 242, 1),
-                fontWeight: FontWeight.bold,
+
+    // não deixar voltar
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: Container(
+          padding: const EdgeInsets.only(
+            top: 60,
+            left: 20,
+            right: 20,
+            bottom: 40,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'O processo demorará alguns minutos para gerar o resultado.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color.fromRGBO(37, 125, 242, 1),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CircularProgressIndicator(),
-            SizedBox(height: 20),
-            Text(
-              'Você será notificado quando o resultado estiver pronto.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: Color.fromRGBO(37, 125, 242, 1),
-                fontWeight: FontWeight.bold,
+              SizedBox(
+                height: 20,
               ),
-            ),
-          ],
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text(
+                'Você será notificado quando o resultado estiver pronto.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color.fromRGBO(37, 125, 242, 1),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
