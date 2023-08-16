@@ -72,7 +72,7 @@ class _VideoPageState extends State<VideoPage> {
     final task = FirebaseApi.uploadVideo(destination, video);
     if (task == null) return; // sera null se ocorrer algum erro na api
 
-    final snapshot = await task!.whenComplete(() {});
+    final snapshot = await task.whenComplete(() {});
     final url = await snapshot.ref.getDownloadURL();
 
     // String apiUrl = 'http://thalisson.pythonanywhere.com/link/';
