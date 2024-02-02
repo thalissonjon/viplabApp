@@ -21,7 +21,7 @@ class _ResultsState extends State<Results> {
   bool hasResults = false;
 
   Future<void> saveJsonData(Map<String, dynamic> jsonData) async {
-    print("entrou na função de save");
+    print("entrou na funçao de save");
     try {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/json/resultado.json');
@@ -69,11 +69,11 @@ class _ResultsState extends State<Results> {
       final Map<String, dynamic> data = jsonDecode(response.body);
 
       DateTime now = DateTime.now();
-      String formattedDateTime = DateFormat('dd-MM-yyyy HH:mm:ss').format(now);
+      String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
 
       data['Data'] = formattedDateTime;
 
-      print("indo entrar na função");
+      print("indo entrar na funçao");
       saveJsonData(data);
 
       setState(() {
@@ -92,6 +92,7 @@ class _ResultsState extends State<Results> {
     }
     print("#####################################");
     print(data);
+
   }
 
   void _handleVoltarButton() {
@@ -158,9 +159,6 @@ class _ResultsState extends State<Results> {
                   final Map<String, dynamic> row = data[index];
                   List<Widget> rowWidgets = [];
                   for (String key in row.keys) {
-                    dynamic value = row[key];
-                    print(value);
-
                     rowWidgets.add(
                       Container(
                         height: 50,
@@ -196,7 +194,7 @@ class _ResultsState extends State<Results> {
                                 ),
                               ),
                               Text(
-                                value.toString(), // Use o valor formatado aqui
+                                row[key].toString(),
                                 style: TextStyle(
                                   color: Color.fromRGBO(0, 74, 173, 1),
                                   fontSize: 16,
@@ -216,6 +214,7 @@ class _ResultsState extends State<Results> {
                 },
               ),
             ),
+            // SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: _handleVoltarButton,
